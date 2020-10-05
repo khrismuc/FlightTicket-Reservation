@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+import { IdContext } from "./IdContext";
+export default function SearchBar(props) {
+  const { setDestinationDate, setDepartureDate } = useContext(IdContext);
 
-function SearchBar(props, ref, ref2) {
+  const handleDate2 = (event) => {
+    setDestinationDate(event.target.value);
+  };
+  const handleDate = (event) => {
+    setDepartureDate(event.target.value);
+  };
   return (
     <div>
       <div>
@@ -8,7 +16,6 @@ function SearchBar(props, ref, ref2) {
           <textarea
             className="textarea"
             rows="2"
-            ref={ref}
             onChange={props.onChange}
             label="text"
             aria-label="enter your destination"
@@ -17,17 +24,17 @@ function SearchBar(props, ref, ref2) {
           <textarea
             className="textarea"
             rows="2"
-            ref2={ref2}
             onChange={props.onChange2}
             label="text"
             aria-label="enter your location"
             placeholder="enter your location"
           ></textarea>
+          <label for="departureDate">Departure Date</label>
+          <input type="date" name="departureDate" onChange={handleDate} />
+          <label for="arrivalDate">Arrival Date</label>
+          <input type="date" name="destinationDate" onChange={handleDate2} />
         </form>
       </div>
     </div>
   );
 }
-
-const forwardSearchBar = React.forwardRef(SearchBar);
-export default forwardSearchBar;
