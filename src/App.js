@@ -12,7 +12,8 @@ function App() {
   const [departureName, setDepartureName] = useState("");
   const [destinationName, setDestinationName] = useState("");
   const [departureDate, setDepartureDate] = useState("");
-
+  const [arrivalInfo, setArrivalInfo] = useState("");
+  const [destinationInfo, setDestinationInfo] = useState("");
   return (
     <div>
       <Router>
@@ -28,6 +29,10 @@ function App() {
             setDestinationName,
             departureDate,
             setDepartureDate,
+            arrivalInfo,
+            setArrivalInfo,
+            destinationInfo,
+            setDestinationInfo,
           }}
         >
           <NavBar />

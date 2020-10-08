@@ -2,36 +2,39 @@ import React, { useRef, useState, useContext } from "react";
 import SearchBar from "./SearchBar";
 import { destinationApi, departureApi } from "../Api";
 import { IdContext } from "./IdContext";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { FrontPageMain, SearchFlightButton, FrontPageH2 } from "./Styled";
 
 function FrontPage() {
   const [departureInput, setDepartureInput] = useState("");
   const [destinationInput, setDestinationInput] = useState("");
-  const [arrivalInfo, setArrivalInfo] = useState("");
-  const [destinationInfo, setDestinationInfo] = useState("");
+  const { arrivalInfo, setArrivalInfo } = useContext(IdContext);
+  const { destinationInfo, setDestinationInfo } = useContext(IdContext);
   const timeout = useRef(null);
   const { setDestinationId, setDepartureId } = useContext(IdContext);
   const { setDestinationName, setDepartureName } = useContext(IdContext);
-  const { destinationName, departureName } = useContext(IdContext);
+  const history = useHistory();
+
   //convert input to placeID to send it to ApiData
   const convertDeparture = () => {
-    departureApi("Seoul Incheon")
+    return departureApi(departureInput)
       .then((res) => {
         setDepartureId(res.Places.map((airport) => airport.PlaceId));
         setArrivalInfo(res.Places.map((airport) => airport));
         setDepartureName(res.Places.map((airport) => airport.PlaceName));
+        return res.Places.map((airport) => airport.PlaceName);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const convertDestination = () => {
-    destinationApi("Tokyo Narita")
+    return destinationApi(destinationInput)
       .then((res) => {
         setDestinationId(res.Places.map((a) => a.PlaceId));
         setDestinationInfo(res.Places.map((airport) => airport));
         setDestinationName(res.Places.map((airport) => airport.PlaceName));
+        return res.Places.map((airport) => airport.PlaceName);
       })
       .catch((err) => {
         console.log(err);
@@ -54,11 +57,15 @@ function FrontPage() {
     }, 800);
   };
 
-  const handleSubmit = (event) => {
-    setDestinationInput("");
-    setDepartureInput("");
-    convertDeparture();
-    convertDestination();
+  const handleSubmit = async (event) => {
+    const departureName = await convertDeparture();
+    console.log("handleSubmit");
+    const destinationName = await convertDestination();
+    console.log(departureName);
+    console.log(destinationName);
+    destinationName.length > 1 && departureName.length > 1
+      ? history.push("/ErrorPage")
+      : history.push("/Main");
   };
 
   let arrivalData = Array.from(arrivalInfo);
@@ -69,12 +76,7 @@ function FrontPage() {
         <FrontPageH2>Where to Next?</FrontPageH2>
         <SearchBar onChange={handleChange} onChange2={handleChange2} />
         <SearchFlightButton onClick={handleSubmit}>
-          <Link to={"/Main"} style={{ textDecoration: "none", color: "white" }}>
-            Search Flights
-          </Link>
-          {/* <Link { ...destinationName>1 &&departureName>1?to={"/Main"}:to={/ErrorPage} }style={{ textDecoration: "none", color: "white" }}>
-            Search Flights
-          </Link> */}
+          Search Flights
         </SearchFlightButton>
       </div>
       {/* 
