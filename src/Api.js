@@ -1,6 +1,6 @@
-export function getFlightInfo(flightId1, flightId2) {
+export function getFlightInfo(flightId1, flightId2, departureDate) {
   return fetch(
-    `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/${flightId1}/${flightId2}/2020-11-01?inboundpartialdate=2020-12-01`,
+    `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browseroutes/v1.0/US/USD/en-US/${flightId1}/${flightId2}/${departureDate}?inboundpartialdate=`,
     {
       method: "GET",
       headers: {

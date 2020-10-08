@@ -1,40 +1,55 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { IdContext } from "./IdContext";
+import {
+  SearchBarBorder,
+  TextArea,
+  TextAreaLabel,
+  DateInput,
+  SearchBarForm,
+  DateLabel,
+  AreaAndLabel,
+} from "./Styled";
 export default function SearchBar(props) {
-  const { setDestinationDate, setDepartureDate } = useContext(IdContext);
+  const { setDepartureDate } = useContext(IdContext);
+  const timeout = useRef(null);
 
-  const handleDate2 = (event) => {
-    setDestinationDate(event.target.value);
-  };
   const handleDate = (event) => {
-    setDepartureDate(event.target.value);
+    const value = event.target.value;
+    clearTimeout(timeout.current);
+    timeout.current = setTimeout(() => {
+      setDepartureDate(value);
+    }, 800);
   };
   return (
     <div>
-      <div>
-        <form>
-          <textarea
-            className="textarea"
-            rows="2"
-            onChange={props.onChange}
-            label="text"
-            aria-label="enter your destination"
-            placeholder="enter your destination"
-          ></textarea>
-          <textarea
-            className="textarea"
-            rows="2"
-            onChange={props.onChange2}
-            label="text"
-            aria-label="enter your location"
-            placeholder="enter your location"
-          ></textarea>
-          <label for="departureDate">Departure Date</label>
-          <input type="date" name="departureDate" onChange={handleDate} />
-          <label for="arrivalDate">Arrival Date</label>
-          <input type="date" name="destinationDate" onChange={handleDate2} />
-        </form>
-      </div>
+      <SearchBarBorder>
+        <SearchBarForm>
+          <AreaAndLabel>
+            <TextAreaLabel>From</TextAreaLabel>
+            <TextArea
+              className="textarea"
+              onChange={props.onChange}
+              label="text"
+              aria-label="country and city"
+              placeholder="enter country and city"
+            ></TextArea>
+          </AreaAndLabel>
+          <AreaAndLabel>
+            <TextAreaLabel>To</TextAreaLabel>
+            <TextArea
+              className="textarea"
+              onChange={props.onChange2}
+              label="text"
+              aria-label="country and city"
+              placeholder="enter country and city"
+            ></TextArea>
+          </AreaAndLabel>
+          <AreaAndLabel>
+            <DateLabel for="departureDate">Date</DateLabel>
+            <DateInput type="date" name="departureDate" onChange={handleDate} />
+          </AreaAndLabel>
+        </SearchBarForm>
+      </SearchBarBorder>
     </div>
   );
 }

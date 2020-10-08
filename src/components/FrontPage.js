@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar";
 import { destinationApi, departureApi } from "../Api";
 import { IdContext } from "./IdContext";
 import { Link } from "react-router-dom";
+import { FrontPageMain, SearchFlightButton, FrontPageH2 } from "./Styled";
 
 function FrontPage() {
   const [departureInput, setDepartureInput] = useState("");
@@ -10,10 +11,9 @@ function FrontPage() {
   const [arrivalInfo, setArrivalInfo] = useState("");
   const [destinationInfo, setDestinationInfo] = useState("");
   const timeout = useRef(null);
-  const { departureId, setDepartureId } = useContext(IdContext);
-  const { destinationId, setDestinationId } = useContext(IdContext);
+  const { setDestinationId, setDepartureId } = useContext(IdContext);
   const { setDestinationName, setDepartureName } = useContext(IdContext);
-
+  const { destinationName, departureName } = useContext(IdContext);
   //convert input to placeID to send it to ApiData
   const convertDeparture = () => {
     departureApi("Seoul Incheon")
@@ -37,6 +37,7 @@ function FrontPage() {
         console.log(err);
       });
   };
+
   const handleChange = (event) => {
     const value = event.target.value;
     clearTimeout(timeout.current);
@@ -54,7 +55,6 @@ function FrontPage() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
     setDestinationInput("");
     setDepartureInput("");
     convertDeparture();
@@ -64,17 +64,25 @@ function FrontPage() {
   let arrivalData = Array.from(arrivalInfo);
   let destinationData = Array.from(destinationInfo);
   return (
-    <div>
-      <SearchBar onChange={handleChange} onChange2={handleChange2} />
-      <button className="text-button" onClick={handleSubmit}>
-        <Link to={"/Main"}> submit</Link>
-      </button>
-
+    <FrontPageMain>
+      <div>
+        <FrontPageH2>Where to Next?</FrontPageH2>
+        <SearchBar onChange={handleChange} onChange2={handleChange2} />
+        <SearchFlightButton onClick={handleSubmit}>
+          <Link to={"/Main"} style={{ textDecoration: "none", color: "white" }}>
+            Search Flights
+          </Link>
+          {/* <Link { ...destinationName>1 &&departureName>1?to={"/Main"}:to={/ErrorPage} }style={{ textDecoration: "none", color: "white" }}>
+            Search Flights
+          </Link> */}
+        </SearchFlightButton>
+      </div>
+      {/* 
       <p>start:{arrivalData.map((d) => d.PlaceName)}</p>
       <p>destination:{destinationData.map((d) => d.PlaceName)}</p>
       <p>{departureId}</p>
-      <p>{destinationId}</p>
-    </div>
+      <p>{destinationId}</p> */}
+    </FrontPageMain>
   );
 }
 

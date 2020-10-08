@@ -19,10 +19,11 @@ export default function MainPage(props) {
   const { departureId } = useContext(IdContext);
   const { destinationId } = useContext(IdContext);
   const { destinationName, departureName } = useContext(IdContext);
+  const { departureDate } = useContext(IdContext);
 
   useEffect(() => {
     if (departureId && destinationId)
-      getFlightInfo(departureId, destinationId)
+      getFlightInfo(departureId, destinationId, departureDate)
         .then((res) => {
           console.log(res);
           setQuotesInfo(res.Quotes.map((airport) => airport));
