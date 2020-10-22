@@ -13,15 +13,17 @@ function FrontPage() {
   const timeout = useRef(null);
   const { setDestinationId, setDepartureId } = useContext(IdContext);
   const { setDestinationName, setDepartureName } = useContext(IdContext);
+  const {setDestinationCountry, setDepartureCountry} = useContext(IdContext);
   const history = useHistory();
 
   //convert input to placeID to send it to ApiData
   const convertDeparture = () => {
-    return departureApi(departureInput)
+    return departureApi("seoul incheon")
       .then((res) => {
         setDepartureId(res.Places.map((airport) => airport.PlaceId));
         setArrivalInfo(res.Places.map((airport) => airport));
         setDepartureName(res.Places.map((airport) => airport.PlaceName));
+        setDepartureCountry(res.Places.map((airport) => airport.CountryName))
         return res.Places.map((airport) => airport.PlaceName);
       })
       .catch((err) => {
@@ -29,11 +31,12 @@ function FrontPage() {
       });
   };
   const convertDestination = () => {
-    return destinationApi(destinationInput)
+    return destinationApi("tokyo")
       .then((res) => {
         setDestinationId(res.Places.map((a) => a.PlaceId));
         setDestinationInfo(res.Places.map((airport) => airport));
         setDestinationName(res.Places.map((airport) => airport.PlaceName));
+        setDestinationCountry(res.Places.map((airport) => airport.CountryName))
         return res.Places.map((airport) => airport.PlaceName);
       })
       .catch((err) => {
@@ -63,7 +66,7 @@ function FrontPage() {
     const destinationName = await convertDestination();
     console.log(departureName);
     console.log(destinationName);
-    destinationName.length > 1 && departureName.length > 1
+    destinationName.length > 1 || departureName.length > 1
       ? history.push("/ErrorPage")
       : history.push("/Main");
   };
