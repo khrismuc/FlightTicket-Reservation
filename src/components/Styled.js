@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import FrontPageBackGround from "../assets/boat.png";
-
+import NoResult from "../assets/NoResult.png"
 //Front page
 export const FrontPageMain = styled.body`
   background-image: url(${FrontPageBackGround});
@@ -651,4 +651,58 @@ cursor:pointer;
   height:6vh;
   width:15vw;
 }
+`
+//Loading Screen
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+		-webkit-transform: rotate(360deg);
+	}
+`
+export const LoadingScreenDiv = styled.div`
+  display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`
+export const LoadingScreen = styled.div`
+  display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 20vh;
+	height: 20vh;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	border-top-color: #52718d;
+	animation: ${spin} 1s ease-in-out infinite;
+	-webkit-animation: ${spin} 1s ease-in-out infinite;
+	margin-top: 30vh;
+`
+//No Result Page
+export const NoResultDiv= styled.div`
+  /* background: #00E7DC; */
+  margin:0; 
+  padding:0; 
+  overflow:hidden;
+  background-image:url(${NoResult});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`
+export const NoResultH1 = styled.h1`
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  padding: 2em 0 0;
+  @media(max-width:450px){
+    /* margin-top:-3vh; */
+    font-size:3vw;
+  }
+`
+export const NoResultSVG = styled.svg`
+  /* margin-top:-40vh; */
+  /* height: 100%;
+  width:100%; */
 `

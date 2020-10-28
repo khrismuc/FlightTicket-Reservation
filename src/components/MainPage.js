@@ -4,6 +4,9 @@ import { IdContext } from "./IdContext";
 import axios from 'axios';
 import {useAuth0} from "@auth0/auth0-react"
 import PlaneSvg from"../assets/plane.svg"
+import LoadingPage from "./Loading+NoResult/LoadingPage"
+import NoResult from "./Loading+NoResult/NoResult"
+import { useHistory } from "react-router-dom";
 import {
   MainPageStyle,
   BlueBackGround,
@@ -24,11 +27,13 @@ import {
   CountryName,
   CountryName2,
   OnHoverDiv,
+  LoadingScreenDiv,
 } from "./Styled";
 
 export default function MainPage(props) {
   const [quotesInfo, setQuotesInfo] = useState("");
   const [carrierInfo, setCarrierInfo] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
   const [carrierName, setCarrierName] = useState("");
   const { departureId } = useContext(IdContext);
   const { destinationId } = useContext(IdContext);
@@ -36,18 +41,29 @@ export default function MainPage(props) {
   const { departureDate } = useContext(IdContext);
   const {destinationCountry,departureCountry} = useContext(IdContext);
   const {user, isAuthenticated} = useAuth0();
-  const userId = user.sub;
+  const userName = user.nickname;
+  const history = useHistory();
+  const userId =()=>{ if(isAuthenticated===true){return(user.sub)}
+                  else{
+                    return(
+                      0
+                    )
+                  };
+                }
 
   useEffect(() => {
+    setIsLoading(true)
     if (departureId && destinationId)
       getFlightInfo(departureId, destinationId, departureDate)
         .then((res) => {
           console.log(res);
           setQuotesInfo(res.Quotes.map((airport) => airport));
           setCarrierInfo(res.Carriers.map((airport) => airport));
+          setIsLoading(false)
         })
         .catch((err) => {
           console.log(err);
+          history.push("/NoResult")
         });
   }, [departureId, destinationId]);
 
@@ -55,7 +71,7 @@ export default function MainPage(props) {
   const onSave= (price,time,carrierName)=>{
     if(isAuthenticated=== true){
     axios.post('http://localhost:5001/savedInfo/save',{departureName,
-    price,destinationName,userId,carrierName,time,departureDate})
+    price,destinationName,userId,carrierName,time,departureDate,userName})
     .then(res => console.log(res.data))
     }else{
       return(
@@ -70,15 +86,16 @@ export default function MainPage(props) {
   console.log("quotesDataArr", quotesDataArr);
   
   return (
+    <>
+    {quotesInfo.length>0&&isLoading===false?
     <MainPageStyle>
       <BlueBackGround>
       {quotesDataArr.map((d, key) => {
         console.log(d.OutboundLeg.CarrierIds[0]);
         const carrierData = carrierDataArr.find(
           (carrierC) => carrierC.CarrierId === d.OutboundLeg.CarrierIds[0]
-          // (carrierC) => console.log(carrierC) 
+
         );
-        // setCarrierName(carrierData.name)
         console.log(carrierData);
         return (
           <OnHoverDiv >
@@ -129,5 +146,10 @@ export default function MainPage(props) {
       })}
       </BlueBackGround>
     </MainPageStyle>
+    :isLoading===true?<LoadingScreenDiv><LoadingPage/></LoadingScreenDiv>:<NoResult/>
+  }
+</>
   );
+  
+  
 }

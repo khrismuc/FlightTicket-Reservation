@@ -4,9 +4,9 @@ import MainPage from "./components/MainPage";
 import { IdContext } from "./components/IdContext";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import ErrorPage from "./components/Error2";
+import MultipleChoicePage from "./components/MultipleChoice";
 import SavedPage from "./components/SavedPage";
-
+import NoResult from "./components/Loading+NoResult/NoResult"
 function App() {
   const [departureId, setDepartureId] = useState("");
   const [destinationId, setDestinationId] = useState("");
@@ -45,8 +45,9 @@ function App() {
           <Switch>
             <Route exact path="/" component={FrontPage} />
             <Route exact path="/Main" component={MainPage} />
-            <Route exact path="/ErrorPage" component={ErrorPage} />
+            <Route exact path="/MultipleChoicePage" component={MultipleChoicePage} />
             <Route exact path="/SavedPage" component={SavedPage} />
+            <Route exact path="/NoResult" component={NoResult} />
           </Switch>
         </IdContext.Provider>
       </Router>

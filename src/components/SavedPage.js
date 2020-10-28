@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState} from 'react'
 import axios from 'axios';
 import {useAuth0} from "@auth0/auth0-react"
 import {SavePageMain, 
@@ -10,10 +10,6 @@ import {SavePageMain,
         CloseButton, 
         CloseButtonImg, 
         PlaneImg, 
-        EditSaveButton,
-        DescDiv,
-        DescTextarea,
-        DescText,
         MainButton,
         DeleteButton
         } from"./Styled"
@@ -22,21 +18,16 @@ import closeIcon from "../assets/closeIcon.svg"
 const FlightData = props =>{
     const {user} = useAuth0()
     const [buttonClick, setButtonClick]=useState(false);
-    const [edit, setEdit] = useState(true);
     const handleClick =()=>{
         setButtonClick(true)
     }
     const handleClose=()=>{
         setButtonClick(false)
     }
-    const handleEdit =()=>{
-        setEdit(false)
-    }
-    const handleSave =()=>{
-        setEdit(true)
-    }
+
     return(
-    <>  {!buttonClick&&(
+    <>  
+        {!buttonClick?
         <ol>
         <MainButton onClick={handleClick} >
             <p>{props.savedData.departureName}</p>
@@ -44,13 +35,13 @@ const FlightData = props =>{
             <p>{props.savedData.destinationName}</p>
         </MainButton>
         </ol>
-    )}
+    :null}
         {buttonClick===true?
         <SavedItemList>
             <CloseButton onClick={handleClose}><CloseButtonImg src={closeIcon} /></CloseButton>
 
             <SavedItemName>NAME</SavedItemName>
-            <SavedItemIndividual>{props.user.nickname}</SavedItemIndividual>
+            <SavedItemIndividual>{props.savedData.userName}</SavedItemIndividual>
 
             <SavedItemName>FROM</SavedItemName>
             <SavedItemIndividual>{props.savedData.departureName[0]}</SavedItemIndividual>
@@ -68,19 +59,6 @@ const FlightData = props =>{
             <SavedItemIndividual>${props.savedData.price}</SavedItemIndividual>
 
             <DeleteButton onClick={() => { props.deleteData(props.savedData._id) }}>REMOVE</DeleteButton>
-
-            {/* <DescDiv>
-            <SavedItemName>DESC</SavedItemName>
-            
-            {edit?<>
-            <EditSaveButton onClick={handleEdit}>Edit</EditSaveButton>
-            <DescText>sfdsfdsfdsfadsfafsdfsdfdsfdf</DescText>
-            </>
-            :<>
-            <EditSaveButton onClick={handleSave}>Save</EditSaveButton>
-            <DescTextarea></DescTextarea>
-            </>}
-            </DescDiv> */}
             
         </SavedItemList>
          :null
@@ -90,9 +68,10 @@ const FlightData = props =>{
 }
 
 function SavedPage() {
-    const {user} = useAuth0()
+    const {user, getAccessTokenSilently} = useAuth0()
     const [savedData, setSavedData] = useState("")
-    
+    const token = getAccessTokenSilently();
+
         axios.get('http://localhost:5001/savedInfo')
             .then(res=>{
                 setSavedData(res.data)
@@ -108,14 +87,24 @@ function SavedPage() {
       }
 
     let savedDataArr = Array.from(savedData)
+    
     return (
         <SavePageMain>
             <MainH2>Welcome {user.nickname}</MainH2>
-            <MainH4>Saved List:</MainH4>
+            <MainH4>Global Saved List:</MainH4>
             
             {savedDataArr.map(a=>{
-                // {if(a.userId[0]===user.sub[0]){
-                    return<FlightData savedData={a} user={user} key={a._id} deleteData={deleteData} />
+                const savedDataId = savedDataArr.find(
+                    (dataUserId) => dataUserId.userId.sub === user.sub
+                  );
+                  console.log(savedDataId)
+                    return<FlightData 
+                        savedData={a} 
+                        user={user} 
+                        key={a._id} 
+                        deleteData={deleteData} 
+                        savedDataId={savedDataId}
+                        />
                     })}
             
         </SavePageMain>

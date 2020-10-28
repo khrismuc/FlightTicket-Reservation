@@ -108,9 +108,6 @@ export default function NavBar() {
           }}
         >
           <Toolbar>
-            {/* <IconButton edge="start" color="inherit" aria-label="menu">
-              <img src={LogoIcon} style={{width:"1.5vw",height:"3vh",marginTop:"-0.8vh"}}/>
-            </IconButton> */}
             <Typography variant="h6" className={classes.title} onClick={handleHome}>
               ONEWAY
             </Typography>
