@@ -5,8 +5,8 @@ export function getFlightInfo(flightId1, flightId2, departureDate) {
       method: "GET",
       headers: {
         "x-rapidapi-host":
-          "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-        "x-rapidapi-key": "f4529ca0a7mshdcd7540ce1fdb1bp15ebfbjsn6b0105b0de66",
+          "",
+        "x-rapidapi-key": "",
       },
     }
   ).then((response) => response.json());
@@ -18,8 +18,8 @@ export function destinationApi(a) {
       method: "GET",
       headers: {
         "x-rapidapi-host":
-          "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-        "x-rapidapi-key": "f4529ca0a7mshdcd7540ce1fdb1bp15ebfbjsn6b0105b0de66",
+          "",
+        "x-rapidapi-key": "",
       },
     }
   ).then((response) => response.json());
@@ -31,8 +31,8 @@ export function departureApi(b) {
       method: "GET",
       headers: {
         "x-rapidapi-host":
-          "skyscanner-skyscanner-flight-search-v1.p.rapidapi.com",
-        "x-rapidapi-key": "f4529ca0a7mshdcd7540ce1fdb1bp15ebfbjsn6b0105b0de66",
+          "",
+        "x-rapidapi-key": "",
       },
     }
   ).then((response) => response.json());
