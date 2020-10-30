@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const savedInfoRoutes = require('./routes/savedInfo')
+const savedInfoRoutes = require('./server/routes/savedInfo')
 require('dotenv').config();
 
 const app = express();
@@ -40,7 +40,7 @@ connection.once('open', () => {
     console.log("Mongodb connection succesfully established ")
 })
 
-app.use(express.static('../client/build'));
+app.use(express.static('./client/build'));
 
 app.use('/savedInfo', savedInfoRoutes)
 // app.post("/",()=>{
