@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "start nodemon server.js && yarn --cwd client start",
     "start": "node server.js",
-    "heroku-prebuild": "yarn --cwd client build"
+    "heroku-prebuild": "npm --cwd client run-script build"
   },
   "keywords": [],
   "author": "",
