@@ -32,7 +32,7 @@ const port = process.env.PORT || 5001;
 app.use(cors())
 app.use(express.json())
 
-const uri = "mongodb+srv://main:main@skyscanner.v4chs.mongodb.net/Skyscanner?retryWrites=true&w=majority";
+const uri = process.env.URI;
 mongoose.connect(uri, ()=>{},{ useUnifiedTopology: true,useNewUrlParser: true, useCreateIndex: true }
 );
 const connection = mongoose.connection;
