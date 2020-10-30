@@ -40,7 +40,7 @@ connection.once('open', () => {
     console.log("Mongodb connection succesfully established ")
 })
 
-app.use(express.static('./client/build'));
+app.use(express.static('../client/build'));
 
 app.use('/savedInfo', savedInfoRoutes)
 // app.post("/",()=>{
