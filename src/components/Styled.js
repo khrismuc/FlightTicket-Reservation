@@ -2,7 +2,7 @@ import styled, { keyframes } from "styled-components";
 import FrontPageBackGround from "../assets/boat.png";
 import NoResult from "../assets/NoResult.png"
 //Front page
-export const FrontPageMain = styled.body`
+export const FrontPageMain = styled.div`
   background-image: url(${FrontPageBackGround});
   background-position: center;
   background-size: cover;

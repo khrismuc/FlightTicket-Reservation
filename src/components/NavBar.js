@@ -111,8 +111,8 @@ export default function NavBar() {
             <Typography variant="h6" className={classes.title} onClick={handleHome}>
               ONEWAY
             </Typography>
-            <IconButton color="inherit" aria-label="search">
-              <SearchIcon onClick={handleHome} />
+            <IconButton color="inherit" aria-label="search" onClick={handleHome}>
+              <SearchIcon />
             </IconButton>
             <LoginButton />
           </Toolbar>

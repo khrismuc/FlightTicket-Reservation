@@ -45,7 +45,7 @@ export default function SearchBar(props) {
             ></TextArea>
           </AreaAndLabel>
           <AreaAndLabel>
-            <DateLabel for="departureDate">Date</DateLabel>
+            <DateLabel htmlFor="departureDate">Date</DateLabel>
             <DateInput type="date" name="departureDate" onChange={handleDate} />
           </AreaAndLabel>
         </SearchBarForm>
